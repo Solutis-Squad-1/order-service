@@ -26,6 +26,7 @@ public class ProdutoController {
     public ProductResponseDto save(
             @RequestBody @Valid ProductPostDto productPostDto
     ){
+        System.out.println("Olá");
         return productService.save(productPostDto);
     }
 }

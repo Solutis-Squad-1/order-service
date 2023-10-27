@@ -21,18 +21,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderRepositoryCustom orderQueryRepository;
+    private final OrderRepositoryCustom orderRepositoryCustom;
     private final OrderMapper mapper;
     private final ProductMapper productMapper;
 
     public Page<OrderResponseDto> findAll(Pageable pageable) {
-        return orderQueryRepository.findAll(pageable).map(mapper::toResponseDto);
+        return orderRepositoryCustom
+                .findAll(pageable)
+                .map(order -> new OrderResponseDto(order, order.getProducts()));
     }
 
     public OrderResponseDto findById(Long id){
         try {
-            Order order = orderQueryRepository.findById(id);
-            return mapper.toResponseDto(order);
+            Order order = orderRepositoryCustom.findById(id);
+            return new OrderResponseDto(order, order.getProducts());
         } catch (NoResultException e){
             throw new EntityNotFoundException("Order not found");
         }
@@ -40,7 +42,7 @@ public class OrderService {
 
     public Page<ProductResponseDto> findProductsById(Long id, Pageable pageable) {
         try {
-            return orderQueryRepository
+            return orderRepositoryCustom
                     .findProductsById(id, pageable)
                     .map(productMapper::toResponseDto);
 
@@ -50,8 +52,9 @@ public class OrderService {
     }
 
     public Page<OrderResponseDto> findOrdersByUserId(Long id, Pageable pageable) {
-        return orderQueryRepository.findOrdersByUserAndNotCanceled(id, pageable)
-                .map(mapper::toResponseDto);
+        return orderRepositoryCustom
+                .findOrdersByUserAndNotCanceled(id, pageable)
+                .map(order -> new OrderResponseDto(order, order.getProducts()));
     }
 
     public OrderResponseDto save(OrderPostDto orderPostDto) {
@@ -59,7 +62,7 @@ public class OrderService {
             Order order = mapper.postDtoToEntity(orderPostDto);
 
             orderRepository.save(order);
-            return mapper.toResponseDto(order);
+            return new OrderResponseDto(order, order.getProducts());
         } catch (Exception e){
             throw e;
         }
@@ -69,7 +72,7 @@ public class OrderService {
         try {
             Order order = orderRepository.getReferenceById(id);
             order.delete(order);
-            orderRepository.save(order);
+            orderRepositoryCustom.delete(order);
         } catch (Exception e) {
             throw e;
         }

@@ -11,8 +11,6 @@ import java.util.List;
 public record OrderPostDto(
 
         @NotNull
-        Instant moment,
-        @NotNull
         Long userId,
         @NotNull
         Payment paymentId,

@@ -9,6 +9,5 @@ import org.mapstruct.Mapping;
 public interface ImageMapper {
     ImageResponseDto toResponseDto(Image image);
 
-    @Mapping(target = "id", ignore = true)
     Image postDtoToEntity(ImageResponseDto imageResponseDto);
 }

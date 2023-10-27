@@ -48,10 +48,19 @@ public class OrderRepositoryCustom {
         return new PageImpl<>(products);
     }
 
+    public List<Product> findListProductsById(Long id) {
+        String jpql = "SELECT o.products FROM Order o WHERE o.id IN :id";
+
+        return em.createQuery(jpql, Product.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
     public Page<Order> findOrdersByUserAndNotCanceled(Long id, Pageable pageable) {
-        String jpql = "SELECT o FROM Order o WHERE o.canceled = false AND o.userId = :id";
+        String jpql = "SELECT o FROM Order o WHERE o.canceled = false AND o.userId = :userId";
 
         List<Order> resultList = em.createQuery(jpql, Order.class)
+                .setParameter("userId", id)
                 .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();

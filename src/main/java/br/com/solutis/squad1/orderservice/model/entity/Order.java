@@ -28,7 +28,7 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_id", nullable = false)
     private Payment paymentId;
 
@@ -52,6 +52,12 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
     private LocalDateTime canceledAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        moment = Instant.now();
+    }
 
     public void delete(Order order){
         canceled = true;

@@ -43,7 +43,7 @@ public class Product {
     )
     private List<Category> categories;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
