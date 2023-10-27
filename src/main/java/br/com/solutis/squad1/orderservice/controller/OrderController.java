@@ -4,6 +4,7 @@ import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;
 import br.com.solutis.squad1.orderservice.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,8 +50,9 @@ public class OrderController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public OrderResponseDto save(
-            @RequestBody OrderPostDto orderPostDto
+            @RequestBody @Valid OrderPostDto orderPostDto
     ){
        return orderService.save(orderPostDto);
     }

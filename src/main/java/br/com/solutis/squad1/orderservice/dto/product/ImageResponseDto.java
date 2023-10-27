@@ -6,5 +6,6 @@ public record ImageResponseDto (
         String originalName,
         String contentType,
         Long size,
-        String url) {
+        String url
+) {
 }

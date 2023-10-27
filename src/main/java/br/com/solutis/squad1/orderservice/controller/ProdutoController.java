@@ -1,13 +1,13 @@
 package br.com.solutis.squad1.orderservice.controller;
 
+import br.com.solutis.squad1.orderservice.dto.product.ProductPostDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;
 import br.com.solutis.squad1.orderservice.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -16,12 +16,16 @@ public class ProdutoController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<ProductResponseDto> findAll(){
-        return null;
+    public Page<ProductResponseDto> findAll(
+            Pageable pageable
+    ){
+        return productService.findAll(pageable);
     }
 
     @PostMapping
-    public ProductResponseDto save(){
-        return null;
+    public ProductResponseDto save(
+            @RequestBody @Valid ProductPostDto productPostDto
+    ){
+        return productService.save(productPostDto);
     }
 }

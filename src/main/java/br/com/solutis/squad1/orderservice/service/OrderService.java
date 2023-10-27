@@ -6,7 +6,7 @@ import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;
 import br.com.solutis.squad1.orderservice.mapper.OrderMapper;
 import br.com.solutis.squad1.orderservice.mapper.ProductMapper;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
-import br.com.solutis.squad1.orderservice.model.repository.OrderQueryRepository;
+import br.com.solutis.squad1.orderservice.model.repository.OrderRepositoryCustom;
 import br.com.solutis.squad1.orderservice.model.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderQueryRepository orderQueryRepository;
+    private final OrderRepositoryCustom orderQueryRepository;
     private final OrderMapper mapper;
     private final ProductMapper productMapper;
 

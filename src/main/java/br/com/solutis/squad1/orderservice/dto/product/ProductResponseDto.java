@@ -15,7 +15,8 @@ public record ProductResponseDto(
         Long sellerId,
         List<Category> categories,
         Image image,
-        int quantity) {
+        int quantity
+) {
 
     public ProductResponseDto(Product product, List<Category> categories, Image image) {
         this(
@@ -25,6 +26,7 @@ public record ProductResponseDto(
                 product.getSellerId(),
                 categories,
                 image,
-                product.getQuantity());
+                product.getQuantity()
+        );
     }
 }

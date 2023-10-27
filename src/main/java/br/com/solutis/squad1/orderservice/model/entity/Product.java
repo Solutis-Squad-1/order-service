@@ -1,5 +1,6 @@
 package br.com.solutis.squad1.orderservice.model.entity;
 
+import br.com.solutis.squad1.orderservice.dto.product.ProductPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -48,4 +49,15 @@ public class Product {
 
     @NotNull
     private int quantity;
+
+    public Product(ProductPostDto product, List<Category> categories, Image image){
+        this.id = product.id();
+        this.name = product.name();
+        this.description = product.description();
+        this.price = product.price();
+        this.sellerId = product.sellerId();
+        this.categories = categories;
+        this.image = image;
+        this.quantity = product.quantity();
+    }
 }

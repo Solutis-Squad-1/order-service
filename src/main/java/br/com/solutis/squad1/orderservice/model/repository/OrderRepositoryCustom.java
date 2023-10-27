@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class OrderQueryRepository {
+public class OrderRepositoryCustom {
 
     @PersistenceContext
     private EntityManager em;
