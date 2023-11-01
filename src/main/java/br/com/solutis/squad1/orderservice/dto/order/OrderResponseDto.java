@@ -15,7 +15,8 @@ public record OrderResponseDto(
         Long userId,
         Payment paymentId,
         String summary,
-        List<Product> products) {
+        List<Product> products
+) {
 
     public OrderResponseDto(Order order, List<Product> products) {
         this(

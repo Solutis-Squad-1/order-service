@@ -1,5 +1,6 @@
 package br.com.solutis.squad1.orderservice.service;
 
+import br.com.solutis.squad1.orderservice.dto.order.OrderPaymentDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @Transactional
@@ -60,6 +63,13 @@ public class OrderService {
     public OrderResponseDto save(OrderPostDto orderPostDto) {
         try{
             Order order = mapper.postDtoToEntity(orderPostDto);
+
+            BigDecimal total = order.getProducts().stream()
+                    .map(product -> product.getPrice())
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            // Enviar Requisição ao Microsserviço de Pagamento
+            new OrderPaymentDto(order, total);
 
             orderRepository.save(order);
             return new OrderResponseDto(order, order.getProducts());
