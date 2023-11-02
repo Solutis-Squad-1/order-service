@@ -2,7 +2,7 @@ CREATE TABLE orders (
     id BIGINT generated always as identity,
     moment timestamp(6) not null,
     user_id BIGINT not null,
-    payment_id BIGINT not null,
+    status_payment BIGINT not null,
     summary VARCHAR(300) not null,
     canceled BOOLEAN not null,
     created_at timestamp(6) not null,

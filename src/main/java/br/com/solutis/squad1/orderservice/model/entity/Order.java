@@ -1,6 +1,6 @@
 package br.com.solutis.squad1.orderservice.model.entity;
 
-import br.com.solutis.squad1.orderservice.model.entity.enums.Payment;
+import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,8 +29,8 @@ public class Order {
     private Long userId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_id", nullable = false)
-    private Payment paymentId;
+    @Column(name = "status_payment", nullable = false)
+    private StatusPayment statusPayment;
 
     @Column(nullable = false)
     private String summary;
@@ -57,6 +57,7 @@ public class Order {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         moment = Instant.now();
+        statusPayment = StatusPayment.NOT_MADE;
     }
 
     public void delete(Order order){
