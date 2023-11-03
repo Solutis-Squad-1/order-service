@@ -1,5 +1,6 @@
 package br.com.solutis.squad1.orderservice.mapper;
 
+import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.dto.product.ImageResponseDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductPostDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;

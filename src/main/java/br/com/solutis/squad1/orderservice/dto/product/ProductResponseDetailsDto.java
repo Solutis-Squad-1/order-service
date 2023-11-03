@@ -7,24 +7,26 @@ import br.com.solutis.squad1.orderservice.model.entity.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
-public record ProductResponseDto(
-
+public record ProductResponseDetailsDto(
+        Long id,
         String name,
         String description,
-        BigDecimal price,
         Long sellerId,
         List<Category> categories,
-        Image image
+        Image image,
+        Integer quantity,
+        BigDecimal price
 ) {
-
-    public ProductResponseDto(Product product, List<Category> categories, Image image) {
-        this(
+    public ProductResponseDetailsDto(Product product, Integer quantity, BigDecimal price){
+        this (
+                product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getPrice(),
                 product.getSellerId(),
-                categories,
-                image
+                product.getCategories(),
+                product.getImage(),
+                quantity,
+                price
         );
     }
 }

@@ -26,10 +26,8 @@ CREATE TABLE products (
     id BIGINT,
     name VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
-    price NUMERIC(10, 2) NOT NULL,
     seller_id BIGINT NOT NULL,
-    image_id BIGINT NOT NULL,
-    quantity BIGINT NOT NULL,
+    image_id BIGINT NOT NULL
 );
 
 CREATE TABLE categories (
@@ -48,6 +46,8 @@ CREATE TABLE product_category (
 CREATE TABLE order_product (
     order_id BIGINT,
     product_id BIGINT,
+    price NUMERIC(10, 2) NOT NULL,
+    quantity BIGINT NOT NULL,
 
     FOREIGN KEY (order_id) REFERENCES orders (id),
     FOREIGN KEY (product_id) REFERENCES products (id)

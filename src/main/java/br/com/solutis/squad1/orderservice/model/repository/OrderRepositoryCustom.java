@@ -36,11 +36,11 @@ public class OrderRepositoryCustom {
                 .getSingleResult();
     }
 
-    public Page<Product> findProductsById(Long id, Pageable pageable) {
-        String jpql = "SELECT o.products FROM Order o WHERE o.id IN :id";
+    public Page<Product> findProductsById(Long orderId, Pageable pageable) {
+        String jpql = "SELECT op.product FROM Order o JOIN o.items op WHERE o.id IN :id";
 
         List<Product> products = em.createQuery(jpql, Product.class)
-                .setParameter("id", id)
+                .setParameter("id", orderId)
                 .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
@@ -49,7 +49,7 @@ public class OrderRepositoryCustom {
     }
 
     public List<Product> findListProductsById(Long id) {
-        String jpql = "SELECT o.products FROM Order o WHERE o.id IN :id";
+        String jpql = "SELECT op.product FROM Order o JOIN o.items op WHERE o.id IN :id";
 
         return em.createQuery(jpql, Product.class)
                 .setParameter("id", id)
@@ -69,6 +69,10 @@ public class OrderRepositoryCustom {
     }
 
     public void delete(Order order) {
+        em.merge(order);
+    }
+
+    public void update(Order order) {
         em.merge(order);
     }
 }

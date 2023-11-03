@@ -15,6 +15,7 @@ public interface CategoryMapper {
     Category postDtoToEntity(CategoryResponseDto categoryResponseDto);
 
     List<Category> toDtosToEntities(List<CategoryResponseDto> categoryDtos);
+
     List<CategoryResponseDto> toEntitiesToDtos(List<Category> categories);
 
 }

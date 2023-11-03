@@ -1,6 +1,8 @@
 package br.com.solutis.squad1.orderservice.controller;
 
 import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
+import br.com.solutis.squad1.orderservice.dto.order.OrderPutDto;
+import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDetailsDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.dto.product.ProductResponseDto;
 import br.com.solutis.squad1.orderservice.service.OrderService;
@@ -33,7 +35,7 @@ public class OrderController {
         return orderService.findById(id);
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/products/{id}")
     public Page<ProductResponseDto> findProductsById(
             Pageable pageable,
             @PathVariable Long id
@@ -49,12 +51,9 @@ public class OrderController {
         return orderService.findOrdersByUserId(id, pageable);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDto save(
-            @RequestBody @Valid OrderPostDto orderPostDto
-    ){
-       return orderService.save(orderPostDto);
+    @PutMapping("/{id}")
+    public void update(@PathVariable Long id, @RequestBody OrderPutDto orderPutDto){
+        orderService.update(id, orderPutDto);
     }
 
     @DeleteMapping("/{id}")

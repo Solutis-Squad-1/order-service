@@ -5,6 +5,7 @@ import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
 import br.com.solutis.squad1.orderservice.model.entity.Product;
+import org.aspectj.weaver.ast.Or;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,6 +18,5 @@ public interface OrderMapper {
     @Mapping(target = "id", ignore = true)
     Order postDtoToEntity(OrderPostDto orderPostDto);
 
-    @Mapping(target = "id", ignore = true)
     Order putDtoToEntity(OrderPutDto orderPutDto);
 }

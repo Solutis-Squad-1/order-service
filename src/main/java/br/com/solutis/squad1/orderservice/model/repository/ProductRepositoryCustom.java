@@ -37,5 +37,4 @@ public class ProductRepositoryCustom {
                 .setParameter("productId", product.getId())
                 .getResultList();
     }
-
 }

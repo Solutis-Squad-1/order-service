@@ -1,5 +1,8 @@
 package br.com.solutis.squad1.orderservice.model.entity;
 
+import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
+import br.com.solutis.squad1.orderservice.dto.order.OrderProductDto;
+import br.com.solutis.squad1.orderservice.dto.order.OrderPutDto;
 import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -9,7 +12,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -35,12 +40,8 @@ public class Order {
     @Column(nullable = false)
     private String summary;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_product",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")})
-    private List<Product> products;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderProduct> items = new HashSet<>();
 
     @Column(nullable = false)
     private boolean canceled = false;
@@ -53,15 +54,28 @@ public class Order {
     @Column(name = "deleted_at")
     private LocalDateTime canceledAt;
 
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         moment = Instant.now();
-        statusPayment = StatusPayment.NOT_MADE;
     }
 
     public void delete(Order order){
         canceled = true;
         canceledAt = LocalDateTime.now();
     }
+
+    public void update(Order order){
+        if (order.getUserId() != null) setUserId(order.getUserId());
+        if (order.getSummary() != null) setSummary(order.getSummary());
+        if (order.getStatusPayment() != null) setStatusPayment(order.getStatusPayment());
+    }
+
+    public Order(OrderProductDto orderProduct){
+        this.userId = orderProduct.userId();
+        this.statusPayment = StatusPayment.NOT_MADE;
+        this.summary = orderProduct.summary();
+    }
+
 }

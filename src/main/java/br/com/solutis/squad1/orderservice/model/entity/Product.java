@@ -10,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -43,12 +45,22 @@ public class Product {
     )
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<OrderProduct> items = new HashSet<>();
+
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @NotNull
-    private int quantity;
+    public Product(Product product, List<Category> categories, Image image){
+        this.id = product.getId();
+        this.name = product.getName();
+        this.description = product.getDescription();
+        this.price = product.getPrice();
+        this.sellerId = product.getSellerId();
+        this.categories = categories;
+        this.image = image;
+    }
 
     public Product(ProductPostDto product, List<Category> categories, Image image){
         this.id = product.id();
@@ -58,6 +70,6 @@ public class Product {
         this.sellerId = product.sellerId();
         this.categories = categories;
         this.image = image;
-        this.quantity = product.quantity();
     }
+
 }

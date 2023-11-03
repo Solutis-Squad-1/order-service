@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,7 +37,13 @@ public class ProductService {
     private final ImageMapper imageMapper;
 
     public Page<ProductResponseDto> findAll(Pageable pageable){
-        return productRepository.findAll(pageable).map(product -> new ProductResponseDto(product, product.getCategories(), product.getImage()));
+        return productRepository.findAll(pageable)
+                .map(product -> new ProductResponseDto(product, product.getCategories(), product.getImage()));
+    }
+
+    public Product findById(Long id){
+        Optional<Product> product = productRepository.findById(id);
+        return product.orElse(null);
     }
 
     private Image findImageByProduct(Product product) {
@@ -45,14 +52,6 @@ public class ProductService {
 
     private List<Category> findAllCategoriesByProduct(Product product) {
         return productRepositoryCustom.findAllCategoriesByProduct(product);
-    }
-
-
-    public ProductResponseDto save(ProductPostDto productPostDto) {
-        Product product = new Product(productPostDto, saveAllCategories(productPostDto), saveImage(productPostDto));
-        productRepository.save(product);
-
-        return productMapper.toResponseDto(product);
     }
 
     public Image saveImage(ProductPostDto productPostDto){
@@ -73,5 +72,20 @@ public class ProductService {
         }
 
         return categories;
+    }
+
+    public Product saveProduct(Product product) {
+        if (findById(product.getId()) == null){
+            List<CategoryResponseDto> categories = categoryMapper.toEntitiesToDtos(product.getCategories());
+
+            ProductPostDto productPostDto = new ProductPostDto(product, categories, imageMapper.toResponseDto(product.getImage()));
+
+            saveAllCategories(productPostDto);
+            saveImage(productPostDto);
+
+            return productRepository.save(product);
+        }
+
+        return findById(product.getId());
     }
 }
