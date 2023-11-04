@@ -27,16 +27,16 @@ public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
     private final OrderProductRepositoryCustom orderProductRepositoryCustom;
 
-    public OrderResponseDetailsDto save(OrderProductDto orderProductDto) {
+    public void save(List<OrderProductDto> orderProductDtos) {
         try {
-            Order order = orderService.save(new Order(orderProductDto));
-            Product product = productService.saveProduct(new Product(orderProductDto.product(), orderProductDto.product().getCategories(), orderProductDto.product().getImage()));
+            Order order = orderService.save(new Order(orderProductDtos.get(0)));
 
-            orderProductRepository.save(new OrderProduct(order, product, orderProductDto.quantity(), orderProductDto.totalPrice()));
+            for (OrderProductDto dto : orderProductDtos){
+                Product product = productService.saveProduct(new Product(dto.product(), dto.product().getCategories(), dto.product().getImage()));
+                orderProductRepository.save(new OrderProduct(order, product, dto.quantity(), dto.totalPrice()));
+            }
 
-            OrderResponseDetailsDto orderResponseDetailsDto = findProductsQuantitiesAndPriceByOrder(order);
-
-            return orderResponseDetailsDto;
+            findProductsQuantitiesAndPriceByOrder(order);
         } catch (Exception e) {
             throw e;
         }

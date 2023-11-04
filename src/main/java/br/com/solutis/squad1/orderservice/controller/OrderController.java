@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -44,6 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/user/{id}")
+    @PreAuthorize("hasAuthority('order:get')")
     public Page<OrderResponseDto> findOrdersByUserId(
             @PathVariable Long id,
             Pageable pageable
@@ -52,12 +54,14 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('order:update')")
     public void update(@PathVariable Long id, @RequestBody OrderPutDto orderPutDto){
         orderService.update(id, orderPutDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('order:delete')")
     public void delete(
             @PathVariable Long id
     ) {
