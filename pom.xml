@@ -98,13 +98,20 @@
             <version>4.0.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>br.com.solutis.squad1</groupId>
-            <artifactId>auth-module</artifactId>
-            <version>1.0.0</version>
-            <classifier>auth</classifier>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>br.com.solutis.squad1</groupId>
+			<artifactId>auth-module</artifactId>
+			<version>1.0.0</version>
+			<classifier>auth</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
 
     <build>
         <plugins>

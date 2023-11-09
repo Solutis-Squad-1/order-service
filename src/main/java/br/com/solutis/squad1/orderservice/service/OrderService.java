@@ -8,8 +8,13 @@ import br.com.solutis.squad1.orderservice.exception.EntityNotFoundException;
 import br.com.solutis.squad1.orderservice.mapper.OrderItemMapper;
 import br.com.solutis.squad1.orderservice.mapper.OrderMapper;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
+<<<<<<< HEAD
 import br.com.solutis.squad1.orderservice.model.entity.OrderItem;
 import br.com.solutis.squad1.orderservice.model.repository.OrderItemRepository;
+=======
+import br.com.solutis.squad1.orderservice.model.entity.Product;
+import br.com.solutis.squad1.orderservice.model.repository.OrderProductRepositoryCustom;
+>>>>>>> dd23967ec97342b196610233750e6920ad83b8ff
 import br.com.solutis.squad1.orderservice.model.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -105,4 +110,18 @@ public class OrderService {
             return new OrderResponseDto(order, orderItemMapper.toResponseDto(orderItems));
         });
     }
+<<<<<<< HEAD
 }
+=======
+
+    public List<Product> findProductsByOrderId(Long id) {
+        try {
+            return orderProductRepositoryCustom.findProductsByOrderId(id);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+}
+
+
+>>>>>>> dd23967ec97342b196610233750e6920ad83b8ff
