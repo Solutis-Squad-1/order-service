@@ -7,7 +7,6 @@ import br.com.solutis.squad1.orderservice.mapper.OrderMapper;
 import br.com.solutis.squad1.orderservice.mapper.ProductMapper;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
 import br.com.solutis.squad1.orderservice.model.entity.Product;
-import br.com.solutis.squad1.orderservice.model.repository.OrderProductRepository;
 import br.com.solutis.squad1.orderservice.model.repository.OrderProductRepositoryCustom;
 import br.com.solutis.squad1.orderservice.model.repository.OrderRepository;
 import br.com.solutis.squad1.orderservice.model.repository.OrderRepositoryCustom;
@@ -93,7 +92,7 @@ public class OrderService {
         }
     }
 
-    private List<Product> findProductsByOrderId(Long id) {
+    public List<Product> findProductsByOrderId(Long id) {
         try {
             return orderProductRepositoryCustom.findProductsByOrderId(id);
         } catch (Exception e) {
