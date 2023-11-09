@@ -1,15 +1,13 @@
 package br.com.solutis.squad1.orderservice.dto.order;
 
-import br.com.solutis.squad1.orderservice.model.entity.Product;
+import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemPostDto;
 import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
 
-import java.time.Instant;
 import java.util.List;
 
-public record OrderPutDto (
-        Long userId,
+public record OrderPutDto(
         String summary,
-        List<Product> products,
+        List<OrderItemPostDto> items,
         StatusPayment statusPayment
 ) {
 }
