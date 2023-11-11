@@ -3,6 +3,7 @@ package br.com.solutis.squad1.orderservice.dto.order;
 import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemResponseDto;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
 import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 

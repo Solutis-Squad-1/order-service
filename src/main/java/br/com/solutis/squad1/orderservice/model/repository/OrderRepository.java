@@ -32,7 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(
             "SELECT o FROM Order o WHERE o.canceled = false"
     )
-    Page<Order> findAllAndAndCanceledFalse(Pageable pageable);
+    Page<Order> findAllAndCanceledFalse(Pageable pageable);
 
 
     @Modifying

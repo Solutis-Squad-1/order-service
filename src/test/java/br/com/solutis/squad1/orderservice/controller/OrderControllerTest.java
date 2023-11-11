@@ -4,9 +4,13 @@ import br.com.solutis.squad1.orderservice.dto.order.OrderPutDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemPostDto;
 import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemResponseDto;
+import br.com.solutis.squad1.orderservice.exception.EntityNotFoundException;
+import br.com.solutis.squad1.orderservice.model.entity.Order;
 import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
 import br.com.solutis.squad1.orderservice.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.action.internal.EntityActionVetoException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +21,15 @@ import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,6 +55,31 @@ class OrderControllerTest {
         when(service.findAll(pageable)).thenReturn(orders);
 
         mvc.perform(get("/api/v1/orders"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Returns a order by id")
+    @WithMockUser(authorities = "ROLE_ADMIN")
+    void findById_ShouldReturnOrderById() throws Exception {
+        Long orderId = 1L;
+
+        mvc.perform(get("/api/v1/orders/" + orderId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Returns a list of orders by user id")
+    @WithMockUser(authorities = "order:read")
+    void findOrdersByUserId_ShouldReturnOrderByUserId() throws Exception {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<OrderResponseDto> listOrders = List.of(createOrderResponseDto(), createOrderResponseDto());
+        Page<OrderResponseDto> orders = new PageImpl<>(listOrders);
+        Long orderId = 1L;
+
+        when(service.findOrdersByUserId(orderId, pageable)).thenReturn(orders);
+
+        mvc.perform(get("/api/v1/orders/users/" + orderId))
                 .andExpect(status().isOk());
     }
 

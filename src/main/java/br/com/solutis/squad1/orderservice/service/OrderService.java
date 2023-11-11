@@ -33,8 +33,8 @@ public class OrderService {
 
     public Page<OrderResponseDto> findAll(Pageable pageable) {
         log.info("Find all orders");
-        Page<Order> orders = orderRepository.findAllAndAndCanceledFalse(pageable);
-        return getOrderResponseDtos(orders);
+        Page<Order> orders = orderRepository.findAllAndCanceledFalse(pageable);
+        return orders != null ? getOrderResponseDtos(orders) : Page.empty();
     }
 
     public OrderResponseDto findById(Long id) {
@@ -48,7 +48,7 @@ public class OrderService {
     public Page<OrderResponseDto> findOrdersByUserId(Long id, Pageable pageable) {
         log.info("Find orders by user id {}", id);
         Page<Order> orders = orderRepository.findOrdersByUserAndAndCanceledFalse(id, pageable);
-        return getOrderResponseDtos(orders);
+        return orders != null ? getOrderResponseDtos(orders) : Page.empty();
     }
 
     public OrderResponseDto save(OrderPostDto orderPostDto) {
