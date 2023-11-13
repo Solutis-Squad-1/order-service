@@ -1,11 +1,14 @@
 package br.com.solutis.squad1.orderservice.model.entity;
 
+import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemPostDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "order_items")
@@ -57,6 +60,12 @@ public class OrderItem {
 
     public Double getTotal() {
         return quantity * price;
+    }
+
+    public OrderItem (OrderItemPostDto dto){
+        productId = dto.productId();
+        quantity = dto.quantity();
+        price = dto.price();
     }
 
     @Override
