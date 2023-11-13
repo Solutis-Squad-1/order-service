@@ -74,17 +74,20 @@ public class OrderService {
     public void update(Long id, OrderPutDto orderPutDto) {
         log.info("Update order by id {}", id);
         Order order = orderRepository.getReferenceById(id);
-        order.update(orderMapper.putDtoToEntity(orderPutDto));
 
-        if (orderPutDto.items() != null) {
-            Set<OrderItem> items = orderItemMapper.postDtoToEntity(orderPutDto.items());
-            order.setTotal(items.stream().mapToDouble(OrderItem::getTotal).sum());
+        if (order != null) {
+            order.update(orderMapper.putDtoToEntity(orderPutDto));
 
-            items.forEach(item -> {
-                item.setOrder(order);
-                item.setTotal(item.getQuantity() * item.getPrice());
-            });
-            orderItemRepository.saveAll(items);
+            if (orderPutDto.items() != null) {
+                Set<OrderItem> items = orderItemMapper.postDtoToEntity(orderPutDto.items());
+                order.setTotal(items.stream().mapToDouble(OrderItem::getTotal).sum());
+
+                items.forEach(item -> {
+                    item.setOrder(order);
+                    item.setTotal(item.getQuantity() * item.getPrice());
+                });
+                orderItemRepository.saveAll(items);
+            }
         }
     }
 
