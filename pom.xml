@@ -12,7 +12,7 @@
     <artifactId>orderservice</artifactId>
     <version>1.0.0</version>
     <name>orderservice</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Order Service</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -109,13 +109,16 @@
 			<version>1.0.0</version>
 			<classifier>auth</classifier>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
     <build>
