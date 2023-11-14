@@ -9,6 +9,7 @@ import br.com.solutis.squad1.orderservice.exception.EntityNotFoundException;
 import br.com.solutis.squad1.orderservice.mapper.OrderItemMapper;
 import br.com.solutis.squad1.orderservice.mapper.OrderMapper;
 import br.com.solutis.squad1.orderservice.model.builder.OrderBuilder;
+import br.com.solutis.squad1.orderservice.model.builder.OrderItemBuilder;
 import br.com.solutis.squad1.orderservice.model.entity.Order;
 import br.com.solutis.squad1.orderservice.model.entity.OrderItem;
 import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
@@ -170,9 +171,9 @@ public class OrderServiceTest {
         Order updatedOrder = updatedOrder();
         Set<OrderItem> updateItems = Set.of(updateOrderItem());
         List<OrderItem> updateOrderItems = new ArrayList<>(updateItems);
+
         when(orderRepository.save(existingOrder)).thenReturn(existingOrder);
         existingOrder = orderRepository.save(existingOrder);
-
         when(orderRepository.getReferenceById(existingOrder.getId())).thenReturn(existingOrder);
         when(orderMapper.putDtoToEntity(orderPutDto)).thenReturn(updatedOrder);
         when(orderItemMapper.postDtoToEntity(orderPutDto.items())).thenReturn(updateItems);
@@ -191,6 +192,41 @@ public class OrderServiceTest {
     }
 
     @Test
+    @DisplayName("Should update the order incomplete successfully")
+    void update_ShouldUpdateOrderIncomplete() {
+        Order existingOrder = createOrder();
+        OrderPutDto orderPutDto = createOrderPutDtoIncomplete();
+        Order updatedOrder = updatedOrder();
+        Set<OrderItem> updateItems = Set.of(updateOrderItem());
+        List<OrderItem> updateOrderItems = new ArrayList<>(updateItems);
+
+        when(orderRepository.save(existingOrder)).thenReturn(existingOrder);
+        existingOrder = orderRepository.save(existingOrder);
+        when(orderRepository.getReferenceById(existingOrder.getId())).thenReturn(existingOrder);
+        when(orderMapper.putDtoToEntity(orderPutDto)).thenReturn(updatedOrder);
+
+        if (orderPutDto.items() != null) {
+            when(orderItemMapper.postDtoToEntity(orderPutDto.items())).thenReturn(updateItems);
+            when(orderItemRepository.saveAll(updateItems)).thenReturn(updateOrderItems);
+        }
+
+        orderService.update(existingOrder.getId(), orderPutDto);
+        Order orderUpdate = orderRepository.getReferenceById(existingOrder.getId());
+
+        assertNotNull(orderUpdate);
+
+        if (orderPutDto.summary() != null){
+            assertEquals(orderPutDto.summary(), orderUpdate.getSummary());
+        }
+
+        if (orderPutDto.statusPayment() != null){
+            assertEquals(orderPutDto.statusPayment(), orderUpdate.getStatusPayment());
+        }
+
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
+    @Test
     @DisplayName("Should delete order and order items")
     void delete_ShouldDeleteOrderAndOrderItems() {
         Long orderId = 1L;
@@ -205,49 +241,41 @@ public class OrderServiceTest {
 
     private Order createOrder() {
         OrderBuilder builder = new OrderBuilder();
-        return new Order(
-                1L,
-                1L,
-                StatusPayment.IN_PROCESSING,
-                "New description",
-                new HashSet<>(),
-                20.0,
-                false,
-                LocalDateTime.now(),
-                null
-        );
-        /*return builder
+        return builder
                 .id(1L)
                 .userId(1L)
                 .statusPayment(StatusPayment.IN_PROCESSING)
                 .summary("New description")
-                .items(Set.of(createOrderItem()))
-                .price(20.0)
+                .items(new HashSet<>())
+                .total(20.0)
                 .canceled(false)
                 .createdAt(LocalDateTime.now())
                 .canceledAt(null)
-                .build();*/
+                .build();
     }
 
     private Order updatedOrder() {
         OrderPutDto dto = createOrderPutDto();
+        OrderBuilder builder = new OrderBuilder();
 
-        return new Order(
-                1L,
-                1L,
-                (dto.statusPayment() != null) ? dto.statusPayment() : StatusPayment.CONFIRMED,
-                (dto.summary() != null) ? dto.summary() : "Updated description",
-                Set.of(new OrderItem(1L, createOrder(), 2, 3, 40.0, 40.0, false, LocalDateTime.now(), null)),
-                20.0,
-                false,
-                LocalDateTime.now(),
-                null
-        );
+        return builder
+                .id(1L)
+                .userId(1L)
+                .statusPayment((dto.statusPayment() != null) ? dto.statusPayment() : StatusPayment.CONFIRMED)
+                .summary((dto.summary() != null) ? dto.summary() : "Updated description")
+                .items(Set.of(new OrderItem(1L, createOrder(), 2, 3, 40.0, 40.0, false, LocalDateTime.now(), null)))
+                .total(20.0)
+                .canceled(false)
+                .createdAt(LocalDateTime.now())
+                .canceledAt(null)
+                .build();
     }
 
     private OrderItem createOrderItem() {
-        /*return OrderBuilder
-                .id(1)
+        OrderItemBuilder builder = new OrderItemBuilder();
+
+        return builder
+                .id(1L)
                 .order(createOrder())
                 .productId(1)
                 .quantity(10)
@@ -256,84 +284,86 @@ public class OrderServiceTest {
                 .createdAt(LocalDateTime.now())
                 .deletedAt(null)
                 .build();
-*/
-        return new OrderItem(
-                1L,
-                createOrder(),
-                1,
-                10,
-                10.0,
-                10.0,
-                false,
-                LocalDateTime.now(),
-                null
-        );
     }
 
     private OrderItem updateOrderItem() {
-        return new OrderItem(
-                1L,
-                updatedOrder(),
-                2,
-                3,
-                40.0,
-                120.0,
-                false,
-                LocalDateTime.now(),
-                null
-        );
+        OrderItemBuilder builder = new OrderItemBuilder();
+
+        return builder
+                .id(1L)
+                .order(updatedOrder())
+                .productId(2)
+                .quantity(3)
+                .price(40.0)
+                .total(120.0)
+                .deleted(false)
+                .createdAt(LocalDateTime.now())
+                .deletedAt(null)
+                .build();
     }
 
     private OrderPutDto createOrderPutDto() {
-        return new OrderPutDto(
-                "Updated description",
-                List.of(new OrderItemPostDto(2, 3, 40.0)),
-                StatusPayment.CONFIRMED
-        );
+        OrderBuilder builder  = new OrderBuilder();
+
+        return builder
+                .summary("Updated description")
+                .listOrderItemsPostDto(List.of(new OrderItemPostDto(2, 3, 40.0)))
+                .statusPayment(StatusPayment.CONFIRMED)
+                .buildOrderPutDto();
     }
 
     private OrderPutDto createOrderPutDtoIncomplete() {
-        return new OrderPutDto(
-                null,
-                null,
-                StatusPayment.CONFIRMED
-        );
+        OrderBuilder builder  = new OrderBuilder();
+
+        return builder
+                .summary(null)
+                .listOrderItemsPostDto(Collections.emptyList())
+                .statusPayment(StatusPayment.CONFIRMED)
+                .buildOrderPutDto();
     }
 
     private OrderPostDto createOrderPostDto() {
-        return new OrderPostDto(
-                1L,
-                "New description",
-                List.of(createOrderItemPostDto())
-        );
+        OrderBuilder builder  = new OrderBuilder();
+
+        return builder
+                .userId(1L)
+                .summary("New description")
+                .listOrderItemsPostDto(List.of(createOrderItemPostDto()))
+                .buildOrderPostDto();
     }
 
     private OrderItemPostDto createOrderItemPostDto() {
-        return new OrderItemPostDto(
-                2,
-                2,
-                40.0
-        );
+        OrderItemBuilder builder  = new OrderItemBuilder();
+
+        return builder
+                .productId(2)
+                .quantity(3)
+                .price(40.0)
+                .buildOrderItemPostDto();
     }
 
     private OrderResponseDto createOrderResponseDto() {
-        return new OrderResponseDto(
-                1L,
-                1L,
-                "New description",
-                40.0,
-                List.of(createOrderItemResponseDto()),
-                StatusPayment.IN_PROCESSING
-        );
+        OrderBuilder builder  = new OrderBuilder();
+
+        return builder
+                .id(1L)
+                .userId(1L)
+                .summary("New description")
+                .total(40.0)
+                .listOrderItemsResponseDto(List.of(createOrderItemResponseDto()))
+                .statusPayment(StatusPayment.IN_PROCESSING)
+                .buildOrderResponseDto();
     }
 
     private OrderItemResponseDto createOrderItemResponseDto() {
-        return new OrderItemResponseDto(
-                1L,
-                1,
-                1,
-                40.0,
-                40.0
-        );
+        OrderItemBuilder builder  = new OrderItemBuilder();
+
+        return builder
+                .id(1L)
+                .productId(1)
+                .quantity(1)
+                .price(40.0)
+                .total(40.0)
+                .buildOrderItemResponseDto();
     }
 }
