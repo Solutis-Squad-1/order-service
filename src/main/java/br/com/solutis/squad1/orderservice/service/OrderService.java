@@ -3,6 +3,7 @@ package br.com.solutis.squad1.orderservice.service;
 import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderPutDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
+import br.com.solutis.squad1.orderservice.dto.order.UpdateOrderStatusDto;
 import br.com.solutis.squad1.orderservice.dto.orderItem.OrderItemResponseDto;
 import br.com.solutis.squad1.orderservice.exception.EntityNotFoundException;
 import br.com.solutis.squad1.orderservice.mapper.OrderItemMapper;
@@ -107,5 +108,11 @@ public class OrderService {
                     .toList();
             return new OrderResponseDto(order, orderItemMapper.toResponseDto(orderItems));
         });
+    }
+
+    public void updateStatus(UpdateOrderStatusDto updateOrderStatusDto) {
+        log.info("Update order status by id {}", updateOrderStatusDto.id());
+        Order order = orderRepository.getReferenceById(updateOrderStatusDto.id());
+        order.updateStatus(updateOrderStatusDto.status());
     }
 }

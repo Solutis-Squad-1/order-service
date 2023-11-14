@@ -68,6 +68,10 @@ public class Order {
         if (order.getStatusPayment() != null) setStatusPayment(order.getStatusPayment());
     }
 
+    public void updateStatus(StatusPayment status) {
+        setStatusPayment(status);
+    }
+
     @Override
     public String toString() {
         return "Order{" +
