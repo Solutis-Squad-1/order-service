@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>br.com.solutis.squad1</groupId>
     <artifactId>orderservice</artifactId>
@@ -67,7 +67,7 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+      
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -103,12 +103,13 @@
             <version>4.0.3</version>
         </dependency>
 
-		<dependency>
-			<groupId>br.com.solutis.squad1</groupId>
-			<artifactId>auth-module</artifactId>
-			<version>1.0.0</version>
-			<classifier>auth</classifier>
-		</dependency>
+        <dependency>
+          <groupId>br.com.solutis.squad1</groupId>
+          <artifactId>auth-module</artifactId>
+          <version>1.0.0</version>
+          <classifier>auth</classifier>
+        </dependency>
+      
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
