@@ -18,7 +18,7 @@ public class OrderStatusConsumer {
     @Value("${spring.rabbitmq.queue.order.status}")
     private String orderStatusQueueName;
 
-    @RabbitListener(queues = {"spring.rabbitmq.queue.order.status"})
+    @RabbitListener(queues = {"${spring.rabbitmq.queue.order.status}"})
     public void consume(
             @Payload UpdateOrderStatusDto updateOrderStatusDto
             ) {
