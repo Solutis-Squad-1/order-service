@@ -5,6 +5,9 @@ import br.com.solutis.squad1.orderservice.model.entity.enums.StatusPayment;
 
 import java.util.List;
 
+/**
+ * Order put dto
+ */
 public record OrderPutDto(
         String summary,
         List<OrderItemPostDto> items,

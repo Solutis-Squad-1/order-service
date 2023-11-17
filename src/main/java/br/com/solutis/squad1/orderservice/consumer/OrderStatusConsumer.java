@@ -18,6 +18,10 @@ public class OrderStatusConsumer {
     @Value("${spring.rabbitmq.queue.order.status}")
     private String orderStatusQueueName;
 
+    /**
+     * Consume message from order status queue
+     * @param updateOrderStatusDto
+     */
     @RabbitListener(queues = {"${spring.rabbitmq.queue.order.status}"})
     public void consume(
             @Payload UpdateOrderStatusDto updateOrderStatusDto

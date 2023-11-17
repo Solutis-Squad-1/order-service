@@ -19,6 +19,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    /**
+     * Find all orders
+     * @param pageable
+     * @return Page<OrderResponseDto>
+     */
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Page<OrderResponseDto> findAll(
@@ -27,6 +32,11 @@ public class OrderController {
         return orderService.findAll(pageable);
     }
 
+    /**
+     * Find order by id
+     * @param id
+     * @return OrderResponseDto
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public OrderResponseDto findById(
@@ -35,6 +45,12 @@ public class OrderController {
         return orderService.findById(id);
     }
 
+    /**
+     * Find orders by user id
+     * @param id
+     * @param pageable
+     * @return Page<OrderResponseDto>
+     */
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('order:read')")
     public Page<OrderResponseDto> findOrdersByUserId(
@@ -44,6 +60,11 @@ public class OrderController {
         return orderService.findOrdersByUserId(id, pageable);
     }
 
+    /**
+     * Save order
+     * @param orderPostDto
+     * @return OrderResponseDto
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('order:create')")
@@ -53,6 +74,11 @@ public class OrderController {
         return orderService.save(orderPostDto);
     }
 
+    /**
+     * Update order
+     * @param id
+     * @param orderPutDto
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('order:update')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -60,6 +86,10 @@ public class OrderController {
         orderService.update(id, orderPutDto);
     }
 
+    /**
+     * Delete order
+     * @param id
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('order:delete')")

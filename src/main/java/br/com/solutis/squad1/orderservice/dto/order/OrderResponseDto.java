@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Order response dto
+ */
 public record OrderResponseDto(
         Long id,
         Long userId,

@@ -32,12 +32,24 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
 
+    /**
+     * Find all orders
+     *
+     * @param pageable
+     * @return Page<OrderResponseDto>
+     */
     public Page<OrderResponseDto> findAll(Pageable pageable) {
         log.info("Find all orders");
         Page<Order> orders = orderRepository.findAllAndCanceledFalse(pageable);
         return orders != null ? getOrderResponseDtos(orders) : Page.empty();
     }
 
+    /**
+     * Find order by id
+     *
+     * @param id
+     * @return OrderResponseDto
+     */
     public OrderResponseDto findById(Long id) {
         log.info("Find order by id {}", id);
         Order order = orderRepository.findByIdAndCanceledFalse(id)
@@ -46,12 +58,25 @@ public class OrderService {
         return new OrderResponseDto(order, orderItemMapper.toResponseDto(items));
     }
 
+    /**
+     * Find orders by user id
+     *
+     * @param id
+     * @param pageable
+     * @return Page<OrderResponseDto>
+     */
     public Page<OrderResponseDto> findOrdersByUserId(Long id, Pageable pageable) {
         log.info("Find orders by user id {}", id);
         Page<Order> orders = orderRepository.findOrdersByUserAndAndCanceledFalse(id, pageable);
         return orders != null ? getOrderResponseDtos(orders) : Page.empty();
     }
 
+    /**
+     * Save order
+     *
+     * @param orderPostDto
+     * @return OrderResponseDto
+     */
     public OrderResponseDto save(OrderPostDto orderPostDto) {
         log.info("Save order");
 
@@ -72,6 +97,12 @@ public class OrderService {
         return new OrderResponseDto(order, orderItemResponseDtos);
     }
 
+    /**
+     * Update order
+     *
+     * @param id
+     * @param orderPutDto
+     */
     public void update(Long id, OrderPutDto orderPutDto) {
         log.info("Update order by id {}", id);
         Order order = orderRepository.getReferenceById(id);
@@ -92,6 +123,11 @@ public class OrderService {
         }
     }
 
+    /**
+     * Delete order
+     *
+     * @param id
+     */
     public void delete(Long id) {
         log.info("Delete order by id {}", id);
         Order order = orderRepository.getReferenceById(id);
@@ -110,6 +146,11 @@ public class OrderService {
         });
     }
 
+    /**
+     * Update order status
+     *
+     * @param updateOrderStatusDto
+     */
     public void updateStatus(UpdateOrderStatusDto updateOrderStatusDto) {
         log.info("Update order status by id {}", updateOrderStatusDto.id());
         Order order = orderRepository.getReferenceById(updateOrderStatusDto.id());

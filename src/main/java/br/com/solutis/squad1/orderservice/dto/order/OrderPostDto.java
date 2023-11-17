@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
+/**
+ * Order post dto
+ */
 public record OrderPostDto(
         @NotNull
         Long userId,
