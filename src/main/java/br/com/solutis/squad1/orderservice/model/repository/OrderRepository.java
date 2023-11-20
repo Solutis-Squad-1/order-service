@@ -44,9 +44,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @return Page of non-canceled orders
      */
     @Query(
-            "SELECT o FROM Order o WHERE o.userId = :id AND o.canceled = false"
+            "SELECT o FROM Order o WHERE o.userId = :id AND o.canceled = false ORDER BY o.createdAt ASC"
     )
-    Page<Order> findOrdersByUserAndAndCanceledFalse(@Param("id") Long id, Pageable pageable);
+    Page<Order> findOrdersByUserAndCanceledFalse(@Param("id") Long id, Pageable pageable);
 
     /**
      * Finds all orders that are not canceled.
@@ -55,7 +55,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @return Page of non-canceled orders
      */
     @Query(
-            "SELECT o FROM Order o WHERE o.canceled = false"
+            "SELECT o FROM Order o WHERE o.canceled = false ORDER BY o.createdAt ASC"
     )
     Page<Order> findAllAndCanceledFalse(Pageable pageable);
 

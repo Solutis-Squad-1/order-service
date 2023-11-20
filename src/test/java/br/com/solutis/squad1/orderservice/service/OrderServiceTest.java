@@ -113,10 +113,10 @@ public class OrderServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         List<Order> orders = Arrays.asList(createOrder(), createOrder());
 
-        when(orderRepository.findOrdersByUserAndAndCanceledFalse(userId, pageable)).thenReturn(new PageImpl<>(orders, pageable, 2));
+        when(orderRepository.findOrdersByUserAndCanceledFalse(userId, pageable)).thenReturn(new PageImpl<>(orders, pageable, 2));
         Page<OrderResponseDto> result = orderService.findOrdersByUserId(userId, pageable);
 
-        verify(orderRepository, times(1)).findOrdersByUserAndAndCanceledFalse(userId, pageable);
+        verify(orderRepository, times(1)).findOrdersByUserAndCanceledFalse(userId, pageable);
         assertNotNull(result);
         assertEquals(2, result.getContent().size());
         assertTrue(result.getContent().stream().allMatch(dto -> dto instanceof OrderResponseDto));
@@ -128,10 +128,10 @@ public class OrderServiceTest {
         Long userId = 999L;
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(orderRepository.findOrdersByUserAndAndCanceledFalse(userId, pageable)).thenReturn(Page.empty());
+        when(orderRepository.findOrdersByUserAndCanceledFalse(userId, pageable)).thenReturn(Page.empty());
         Page<OrderResponseDto> result = orderService.findOrdersByUserId(userId, pageable);
 
-        verify(orderRepository, times(1)).findOrdersByUserAndAndCanceledFalse(userId, pageable);
+        verify(orderRepository, times(1)).findOrdersByUserAndCanceledFalse(userId, pageable);
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }

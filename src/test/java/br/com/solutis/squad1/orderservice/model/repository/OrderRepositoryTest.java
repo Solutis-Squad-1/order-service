@@ -114,8 +114,8 @@ class OrderRepositoryTest {
         Order order = createOrder();
         Page<Order> expectedPage = new PageImpl<>(Collections.singletonList(order));
 
-        when(orderRepository.findOrdersByUserAndAndCanceledFalse(anyLong(), any(Pageable.class))).thenReturn(expectedPage);
-        Page<Order> response = orderRepository.findOrdersByUserAndAndCanceledFalse(userId, pageable);
+        when(orderRepository.findOrdersByUserAndCanceledFalse(anyLong(), any(Pageable.class))).thenReturn(expectedPage);
+        Page<Order> response = orderRepository.findOrdersByUserAndCanceledFalse(userId, pageable);
 
         assertEquals(expectedPage, response);
     }
@@ -126,8 +126,8 @@ class OrderRepositoryTest {
         Long userId = 999L;
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(orderRepository.findOrdersByUserAndAndCanceledFalse(anyLong(), any(Pageable.class))).thenReturn(Page.empty());
-        Page<Order> response = orderRepository.findOrdersByUserAndAndCanceledFalse(userId, pageable);
+        when(orderRepository.findOrdersByUserAndCanceledFalse(anyLong(), any(Pageable.class))).thenReturn(Page.empty());
+        Page<Order> response = orderRepository.findOrdersByUserAndCanceledFalse(userId, pageable);
 
         assertEquals(Page.empty(), response);
     }
