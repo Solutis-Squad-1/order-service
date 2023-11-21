@@ -12,6 +12,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface represents a repository for the Order entity.
+ * It extends JpaRepository which provides JPA related methods such as save(), findOne(), findAll(), count(), delete() etc.
+ * @see org.springframework.data.jpa.repository.JpaRepository
+ */
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     /**

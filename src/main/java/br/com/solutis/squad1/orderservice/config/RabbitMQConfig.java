@@ -1,5 +1,6 @@
 package br.com.solutis.squad1.orderservice.config;
 
+
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -11,6 +12,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for RabbitMQ.
+ * This class sets up the necessary configurations for connecting to RabbitMQ and message exchange.
+ */
 @Configuration
 public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue.order.status}")

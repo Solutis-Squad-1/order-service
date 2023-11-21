@@ -12,12 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * This class is responsible for handling HTTP requests related to orders.
+ * It uses {@link OrderService} to process the business logic.
+ */
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
-
+    /**
+     * Service class for Order related operations.
+     */
     private final OrderService orderService;
 
     /**

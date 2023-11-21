@@ -9,6 +9,9 @@ import org.mapstruct.Mapping;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Mapper interface for OderItem.
+ */
 @Mapper(componentModel = "spring")
 public interface OrderItemMapper {
     @Mapping(target = "id", ignore = true)

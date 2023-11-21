@@ -22,6 +22,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This service class is responsible for handling business logic related to orders.
+ * It uses {@link OrderRepository} and {@link OrderItemRepository} for data access,
+ * and {@link OrderMapper} and {@link OrderItemMapper} for converting between DTOs and entities.
+ */
+
 @Service
 @Transactional
 @RequiredArgsConstructor

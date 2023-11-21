@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * Aspect for logging method entry, exit, and request mapping.
+ */
 @Aspect
 @Component
 public class LoggerAspect {

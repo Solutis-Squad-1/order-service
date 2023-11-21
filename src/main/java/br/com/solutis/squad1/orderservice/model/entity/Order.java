@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class representing an Order.
+ */
 @Entity
 @Table(name = "orders")
 @Data

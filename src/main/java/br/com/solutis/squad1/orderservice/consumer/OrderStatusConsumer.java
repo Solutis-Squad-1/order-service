@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+/**
+ * Consumer class for OrderStatus.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j

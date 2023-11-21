@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Class representing an OrderItem.
+ */
 @Entity
 @Table(name = "order_items")
 @Data

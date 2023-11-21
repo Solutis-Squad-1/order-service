@@ -7,6 +7,9 @@ import br.com.solutis.squad1.orderservice.model.entity.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * Mapper interface for Order
+ */
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
     OrderResponseDto toResponseDto(Order order);
