@@ -4,6 +4,7 @@ import br.com.solutis.squad1.orderservice.dto.order.OrderPostDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderPutDto;
 import br.com.solutis.squad1.orderservice.dto.order.OrderResponseDto;
 import br.com.solutis.squad1.orderservice.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ public class OrderController {
      * @param pageable
      * @return Page<OrderResponseDto>
      */
+    @Operation(summary = "Find all orders")
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Page<OrderResponseDto> findAll(
@@ -37,6 +39,7 @@ public class OrderController {
      * @param id
      * @return OrderResponseDto
      */
+    @Operation(summary = "Find order by id")
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public OrderResponseDto findById(
@@ -51,6 +54,7 @@ public class OrderController {
      * @param pageable
      * @return Page<OrderResponseDto>
      */
+    @Operation(summary = "Find orders by user id")
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('order:read')")
     public Page<OrderResponseDto> findOrdersByUserId(
@@ -65,6 +69,7 @@ public class OrderController {
      * @param orderPostDto
      * @return OrderResponseDto
      */
+    @Operation(summary = "Save order")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('order:create')")
@@ -79,6 +84,7 @@ public class OrderController {
      * @param id
      * @param orderPutDto
      */
+    @Operation(summary = "Update order")
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('order:update')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -90,6 +96,7 @@ public class OrderController {
      * Delete order
      * @param id
      */
+    @Operation(summary = "Delete order")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('order:delete')")
