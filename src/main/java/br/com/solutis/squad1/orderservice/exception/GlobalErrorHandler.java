@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Global exception handler for handling and responding to various exceptions in the application.
+ */
 @RestControllerAdvice
 public class GlobalErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalErrorHandler.class);
